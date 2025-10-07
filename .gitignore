@@ -1,0 +1,65 @@
+# ==== IDEs ====
+# IntelliJ / IDEA
+**/.idea/
+*.iml
+# VS Code
+**/.vscode/
+
+# Eclipse (just in case)
+**/.settings/
+*.classpath
+*.project
+
+# ==== Java / Build output ====
+target/
+out/
+bin/
+*.class
+*.log
+
+# ==== Maven ====
+# Keep wrapper files in Git:
+!/.mvn/
+!/.mvn/wrapper/*
+!/mvnw
+!/mvnw.cmd
+# (Do NOT ignore .mvn – it belongs in Git)
+
+# ==== Gradle (if any) ====
+.gradle/
+build/
+
+# ==== Node / Frontend (if any) ====
+node_modules/
+dist/
+.cache/
+.npm/
+.pnpm-store/
+.yarn/*
+!.yarn/patches/
+!.yarn/plugins/
+!.yarn/releases/
+!.yarn/sdks/
+!.yarn/versions/
+
+# ==== Env / Secrets (adjust to your usage) ====
+.env
+.env.*
+application-local.properties
+application-*.yml.local
+
+# ==== OS junk ====
+# macOS
+.DS_Store
+.AppleDouble
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+# Linux
+*~
+
+# ==== Archives / misc ====
+*.zip
+*.tar
+*.tar.gz
