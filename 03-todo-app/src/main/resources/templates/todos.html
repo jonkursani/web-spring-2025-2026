@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <title>Todo App</title>
+</head>
+<body>
+<div class="container mt-5">
+    <h1>Todo List</h1>
+
+    <form th:action="@{'/add'}" method="post">
+        <div class="d-flex">
+            <input type="text" class="form-control" name="new-todo" placeholder="Add new todo..." required>
+            <button type="submit" class="btn btn-primary">Add</button>
+        </div>
+    </form>
+
+    <p th:if="${#lists.isEmpty(todos)}" class="text-center">
+        No todos - add new
+    </p>
+
+    <ul class="list-group list-group-flush" th:if="${!#lists.isEmpty(todos)}">
+        <!-- Per me iteru perdorni th:each -->
+        <!--        <li class="list-group-item">An item</li>-->
+        <li class="list-group-item d-flex justify-content-between"
+            th:each="todo : ${todos}"
+            th:classappend="${todo.completed} ? 'list-group-item-success' : ''"
+        >
+            <span th:text="${todo.title}"></span>
+
+            <div class="d-flex">
+                <form th:action="@{'/toggle/' + ${todo.id}}" method="post">
+                    <button type="submit"
+                            class="btn btn-outline-success"
+                            th:text="${todo.completed} ? '✔️ Done' : '⭕ Not done'"
+                    ></button>
+                </form>
+
+                <form th:action="@{'/remove/' + ${todo.id}}" method="post">
+                    <button type="submit" class="btn btn-outline-danger ms-2">❌ Delete</button>
+                </form>
+            </div>
+
+
+        </li>
+    </ul>
+</div>
+</body>
+</html>
