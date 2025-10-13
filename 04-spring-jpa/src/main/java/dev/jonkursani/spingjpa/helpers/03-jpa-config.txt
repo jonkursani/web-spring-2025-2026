@@ -1,0 +1,41 @@
+-- skripta SQL
+-- Create the database if it doesn't already exist
+IF NOT EXISTS (SELECT name FROM sys.databases WHERE name = N'student_tracker')
+BEGIN
+    CREATE DATABASE student_tracker;
+END;
+GO
+
+USE student_tracker;
+GO
+
+-- Drop the table if it exists
+IF OBJECT_ID('dbo.students', 'U') IS NOT NULL
+    DROP TABLE dbo.students;
+GO
+
+-- Create the table
+CREATE TABLE dbo.students (
+    id INT IDENTITY(1,1) PRIMARY KEY,
+    first_name NVARCHAR(45) NULL,
+    last_name NVARCHAR(45) NULL,
+    email NVARCHAR(45) NULL
+);
+GO
+
+-----------------------------------------------------------------------------
+
+// Dependencies Spring Boot
+Spring Data JPA
+MS SQL Server Driver
+
+-----------------------------------------------------------------------------
+
+# konfigurimi DB
+spring.datasource.url=jdbc:sqlserver://localhost:1433;databaseName=student_tracker;encrypt=true;trustServerCertificate=true
+# windows auth pa user dhe password vetem e komentoni username dhe password
+# spring.datasource.url=jdbc:sqlserver://localhost:1433;databaseName=student_tracker;integratedSecurity=true;encrypt=true;trustServerCertificate=true
+spring.datasource.username=sa
+spring.datasource.password=Strong!Passw0rd1
+spring.datasource.driver-class-name=com.microsoft.sqlserver.jdbc.SQLServerDriver
+spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.SQLServerDialect
