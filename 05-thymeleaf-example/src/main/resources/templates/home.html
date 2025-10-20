@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <!--    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">-->
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <title>Home</title>
+</head>
+<body>
+<div class="container">
+    <h1>Hello from Home</h1>
+
+    <p>Current time: 2025-10-20T12:58:56.567</p>
+    <p th:text="'Current time on server: ' + ${date}">
+        <!--th:text po e rendereon tekstin mrena tagjeve <p>-->
+    </p>
+
+    <h3>th:if</h3>
+    <p th:if="${isStudent}">Is Student</p>
+    <p th:text="${isStudent} ? 'Student' : 'Not Student'"></p>
+
+    <h3>th:each</h3>
+    <h5>Colors:</h5>
+    <ul>
+        <li th:each="color : ${colors}" th:text="${color}"></li>
+    </ul>
+
+    <h5>Products table</h5>
+    <table class="table table-striped table-bordered">
+        <tr>
+            <th>Name</th>
+            <th>Price</th>
+        </tr>
+        <tr th:each="product : ${products}">
+            <td th:text="${product.key}"></td>
+            <td th:text="${product.value}"></td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>
