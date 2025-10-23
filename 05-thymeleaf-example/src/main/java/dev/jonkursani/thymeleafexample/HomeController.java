@@ -4,6 +4,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -63,7 +64,32 @@ public class HomeController {
         return "grades";
     }
 
+    @GetMapping("/student-profile")
+    public String studentProfile(Model model) {
+        Student student = new Student("Almir", 20, "Cacttus Education");
+        model.addAttribute("student", student);
+        return "student-profile"; // student-profile.html
+    }
 
+    @GetMapping("/students")
+    public String studentList(Model model) {
+        List<Student> students = List.of(
+                new Student("Almir", 20, "Cacttus Education"),
+                new Student("John", 22, "Cacttus Education"),
+                new Student("Jane", 25, "Cacttus Education")
+        );
+        model.addAttribute("studentList", students);
+        return "students"; // students.html
+    }
 
+    @GetMapping("/my-form")
+    public String myForm(Model model) {
+        return "my-form"; // my-form.html
+    }
 
+    @GetMapping("process-form")
+    public String processMyForm(@RequestParam("myName") String emriIm, Model model) {
+        model.addAttribute("emriIm", emriIm);
+        return "submitted-form";
+    }
 }
