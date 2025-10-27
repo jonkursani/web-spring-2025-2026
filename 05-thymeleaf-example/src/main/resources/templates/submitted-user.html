@@ -9,22 +9,18 @@
           integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <!--    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">-->
     <link rel="stylesheet" th:href="@{/css/styles.css}">
-    <title>Movies</title>
+    <title>User</title>
 </head>
 <body>
 <div th:replace="layout/nav"></div>
 
 <div class="container">
-    <div class="card">
-        <div class="card-header">
-            <h4>Profili i studentit</h4>
-        </div>
-        <div class="card-body">
-            <p>Emri: <span th:text="${student.name}"></span></p>
-            <p>Mosha: <span th:text="${student.age}"></span></p>
-            <p>Universiteti: <span th:text="${student.university}"></span></p>
-        </div>
-    </div>
+    <h2>Te dhenat e juaja jane derguar me sukses</h2>
+    <p>Emri dhe mbiemri: <span th:text="${user.name}"></span></p>
+    <p>Mosha: <span th:text="${user.age}"></span></p>
+    <p>Email: <span th:text="${user.email}"></span></p>
 </div>
+
+
 </body>
 </html>

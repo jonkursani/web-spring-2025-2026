@@ -2,9 +2,7 @@ package dev.jonkursani.thymeleafexample;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -87,9 +85,42 @@ public class HomeController {
         return "my-form"; // my-form.html
     }
 
-    @GetMapping("process-form")
-    public String processMyForm(@RequestParam("myName") String emriIm, Model model) {
+    @GetMapping("/process-form")
+    public String processMyForm(@RequestParam("myName") String emriIm,
+                                @RequestParam("mySurname") String mbiemriIm,
+                                @RequestParam("myAge") int moshaIme,
+                                Model model) {
         model.addAttribute("emriIm", emriIm);
+        model.addAttribute("mbiemriIm", mbiemriIm);
+        model.addAttribute("moshaIme", moshaIme);
         return "submitted-form";
     }
+
+    @GetMapping("/user-form") // shfaq formen prandaj duhet me @GetMapping
+    public String myFormPost(Model model) {
+        model.addAttribute("user", new User());
+        return "user-form";
+    }
+
+    @PostMapping("/process-user-data")
+    public String processUserData(@ModelAttribute("user") User myUser) {
+        // @ModelAttribute("user") -> e lexon te dhenat nga forma dhe i vendosni ne objektin User
+        // dhe i ben te qasshme te dhenat ne HTML pa pas nevoje model.addAttribute()
+        System.out.println(myUser);
+        return "submitted-user";
+    }
+
+    @GetMapping("/student-form")
+    public String studentForm(Model model) {
+        model.addAttribute("student", new Student());
+        return "student-form";
+    }
+
+
+
+
+
+
+
+
 }
