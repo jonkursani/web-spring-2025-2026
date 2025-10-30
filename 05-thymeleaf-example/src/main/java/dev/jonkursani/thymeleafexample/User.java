@@ -4,6 +4,9 @@ public class User {
     private String name;
     private int age;
     private String email;
+    private String country = "";
+    private String favoriteLanguage;
+    private String hobbies;
 
     public User() {}
 
@@ -35,5 +38,29 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public String getFavoriteLanguage() {
+        return favoriteLanguage;
+    }
+
+    public void setFavoriteLanguage(String favoriteLanguage) {
+        this.favoriteLanguage = favoriteLanguage;
+    }
+
+    public String getHobbies() {
+        return hobbies;
+    }
+
+    public void setHobbies(String hobbies) {
+        this.hobbies = hobbies;
     }
 }

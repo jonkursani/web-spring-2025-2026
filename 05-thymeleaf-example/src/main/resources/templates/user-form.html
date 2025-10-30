@@ -9,7 +9,7 @@
           integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <!--    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">-->
     <link rel="stylesheet" th:href="@{/css/styles.css}">
-    <title>Movies</title>
+    <title>User form</title>
 </head>
 <body>
 <div th:replace="layout/nav"></div>
@@ -21,33 +21,78 @@
         </div>
         <div class="card-body">
             <form th:action="@{/process-user-data}" th:object="${user}" method="post">
-<!--                Ne vend se me perdor ${user.name} po e perdorim *{name} pasiqe e kemi bo bind objektin me th:object -->
-                <label class="form-label">Emri</label>
-                <input type="text"
-                       class="form-control"
-                       placeholder="Shkruaj emrin dhe mbiemri..."
-                       th:field="*{name}"
-                       required
-                />
+                <!--                Ne vend se me perdor ${user.name} po e perdorim *{name} pasiqe e kemi bo bind objektin me th:object -->
+                <div class="mb-3">
+                    <label class="form-label">Emri</label>
+                    <input type="text"
+                           class="form-control"
+                           placeholder="Shkruaj emrin dhe mbiemri..."
+                           th:field="*{name}"
+                           required
+                    />
+                </div>
 
+                <div class="mb-3">
+                    <label class="form-labe">Mosha</label>
+                    <input type="number"
+                           class="form-control"
+                           placeholder="Shkruaj moshen..."
+                           th:field="*{age}"
+                           required
+                    />
+                </div>
 
-                <label class="form-labe">Mosha</label>
-                <input type="number"
-                       class="form-control"
-                       placeholder="Shkruaj moshen..."
-                       th:field="*{age}"
-                       required
-                />
+                <div class="mb-3">
+                    <label class="form-label">Email</label>
+                    <input type="email"
+                           class="form-control"
+                           placeholder="Shkruan email-in..."
+                           th:field="*{email}"
+                           required
+                    />
+                </div>
 
-                <label class="form-label">Email</label>
-                <input type="email"
-                       class="form-control"
-                       placeholder="Shkruan email-in..."
-                       th:field="*{email}"
-                       required
-                />
+                <div class="mb-3">
+                    <label class="form-label">Shteti</label>
+                    <!--                    <select name="country">-->
+                    <!--                    country=ks-->
+                    <select th:field="*{country}" class="form-select" required>
+                        <option value="" disabled selected>Zgjedh shtetin</option>
+                        <option value="ks">Kosove</option>
+                        <option value="al">Shqiperi</option>
+                        <option value="mk">Maqedoni</option>
+                    </select>
+                </div>
 
-                <button type="submit" class="btn btn-primary">Submit</button>
+                <!--                favoriteLanguage=Java-->
+                <!--                id na lidhet me for qe me mujt useri nepermjet tekstit me bo check radio butonin-->
+                <div class="mb-3">
+                    <label>Zgjedh gjuhen e preferuar: </label>
+                    <input type="radio" id="java" th:field="*{favoriteLanguage}" value="Java">
+                    <label for="java">Java</label>
+
+                    <input type="radio" id="python" th:field="*{favoriteLanguage}" value="Python">
+                    <label for="python">Python</label>
+
+                    <input type="radio" id="js" th:field="*{favoriteLanguage}" value="JavaScript">
+                    <label for="js">JavaScript</label>
+                </div>
+
+                <div class="mb-3">
+                    <label>Zgjedh hobit: </label>
+                    <input type="checkbox" id="reading" th:field="*{hobbies}" value="Leximi">
+                    <label for="reading">Leximi</label>
+
+                    <input type="checkbox" id="traveling" th:field="*{hobbies}" value="Udhetimi">
+                    <label for="traveling">Udhetimi</label>
+
+                    <input type="checkbox" id="sports" th:field="*{hobbies}" value="Sportet">
+                    <label for="sports">Sportet</label>
+                </div>
+
+                <div class="text-end">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
             </form>
         </div>
     </div>

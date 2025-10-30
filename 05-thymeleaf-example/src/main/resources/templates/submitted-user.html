@@ -19,8 +19,12 @@
     <p>Emri dhe mbiemri: <span th:text="${user.name}"></span></p>
     <p>Mosha: <span th:text="${user.age}"></span></p>
     <p>Email: <span th:text="${user.email}"></span></p>
+    <p th:if="${user.country == 'ks'}">Shteti: Kosove</p>
+    <p th:if="${user.country == 'al'}">Shteti: Shqiperi</p>
+    <p th:if="${user.country == 'mk'}">Shteti: Maqedoni</p>
+    <p>Gjuha e preferuar: <span th:text="${user.favoriteLanguage}"></span></p>
+    <p>Hobit e zgjedhur: <span th:text="${user.hobbies}"></span></p>
 </div>
-
 
 </body>
 </html>
