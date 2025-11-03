@@ -1,7 +1,11 @@
 package dev.jonkursani.thymeleafexample;
 
+import jakarta.validation.Valid;
+import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -11,6 +15,13 @@ import java.util.Map;
 @Controller // ki mi menaxhu web requestat
 @RequestMapping("/") // rruga apo path (route) se qysh vijm deri te kontrolleri
 public class HomeController {
+    // per mi largu hapesirat e panevojshme nese useri na dergon ne input '      '
+    @InitBinder
+    public void initBinder(WebDataBinder binder) {
+        StringTrimmerEditor stringTrimmerEditor = new StringTrimmerEditor(true);
+        binder.registerCustomEditor(String.class, stringTrimmerEditor);
+    }
+
     @GetMapping
 //    @GetMapping("/home")
     public String home(Model m) {
@@ -103,11 +114,18 @@ public class HomeController {
     }
 
     @PostMapping("/process-user-data")
-    public String processUserData(@ModelAttribute("user") User myUser) {
+    public String processUserData(@Valid @ModelAttribute("user") User myUser, BindingResult result) {
         // @ModelAttribute("user") -> e lexon te dhenat nga forma dhe i vendosni ne objektin User
         // dhe i ben te qasshme te dhenat ne HTML pa pas nevoje model.addAttribute()
+        // @Valid -> e validon te dhenat nga forma
+        // BindingResult -> e lexon te dhenat nga forma dhe i permban errorat
         System.out.println(myUser);
-        return "submitted-user";
+
+        if (result.hasErrors()) {
+            return "user-form";
+        } else {
+            return "submitted-user";
+        }
     }
 
     @GetMapping("/student-form")
@@ -115,12 +133,4 @@ public class HomeController {
         model.addAttribute("student", new Student());
         return "student-form";
     }
-
-
-
-
-
-
-
-
 }

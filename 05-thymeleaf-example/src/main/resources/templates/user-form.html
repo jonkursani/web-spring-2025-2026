@@ -28,18 +28,26 @@
                            class="form-control"
                            placeholder="Shkruaj emrin dhe mbiemri..."
                            th:field="*{name}"
-                           required
+                           th:classappend="${#fields.hasErrors('name') ? 'is-invalid' : ''}"
                     />
+                    <div th:if="${#fields.hasErrors('name')}"
+                         th:errors="*{name}"
+                         class="invalid-feedback"
+                    ></div>
                 </div>
 
                 <div class="mb-3">
-                    <label class="form-labe">Mosha</label>
+                    <label class="form-label">Mosha</label>
                     <input type="number"
                            class="form-control"
                            placeholder="Shkruaj moshen..."
                            th:field="*{age}"
-                           required
+                           th:classappend="${#fields.hasErrors('age') ? 'is-invalid' : ''}"
                     />
+                    <div th:if="${#fields.hasErrors('age')}"
+                         th:errors="*{age}"
+                         class="invalid-feedback"
+                    ></div>
                 </div>
 
                 <div class="mb-3">
@@ -48,15 +56,33 @@
                            class="form-control"
                            placeholder="Shkruan email-in..."
                            th:field="*{email}"
-                           required
+                           th:classappend="${#fields.hasErrors('email') ? 'is-invalid' : ''}"
                     />
+                    <div th:if="${#fields.hasErrors('email')}"
+                        th:errors="*{email}"
+                        class="invalid-feedback"
+                    ></div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Numri i telefonit</label>
+                    <input type="text"
+                           class="form-control"
+                           placeholder="Shkruan numrin e telefonit..."
+                           th:field="*{phoneNo}"
+                           th:classappend="${#fields.hasErrors('phoneNo') ? 'is-invalid' : ''}"
+                    />
+                    <div th:if="${#fields.hasErrors('phoneNo')}"
+                         th:errors="*{phoneNo}"
+                         class="invalid-feedback"
+                    ></div>
                 </div>
 
                 <div class="mb-3">
                     <label class="form-label">Shteti</label>
                     <!--                    <select name="country">-->
                     <!--                    country=ks-->
-                    <select th:field="*{country}" class="form-select" required>
+                    <select th:field="*{country}" class="form-select">
                         <option value="" disabled selected>Zgjedh shtetin</option>
                         <option value="ks">Kosove</option>
                         <option value="al">Shqiperi</option>
