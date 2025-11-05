@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <!--    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">-->
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <title>Student Form</title>
+</head>
+<body>
+<div th:replace="layout/nav"></div>
+
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            <h3>Student Form</h3>
+        </div>
+        <div class="card-body">
+            <form th:action="@{/process-student-data}" th:object="${student}" method="post">
+                <!--                Ne vend se me perdor ${student.name} po e perdorim *{name} pasiqe e kemi bo bind objektin me th:object -->
+                <div class="mb-3">
+                    <label class="form-label">Emri</label>
+                    <input type="text"
+                           class="form-control"
+                           placeholder="Shkruaj emrin dhe mbiemri..."
+                           th:field="*{name}"
+                           th:classappend="${#fields.hasErrors('name') ? 'is-invalid' : ''}"
+                    />
+                    <div th:if="${#fields.hasErrors('name')}"
+                         th:errors="*{name}"
+                         class="invalid-feedback"
+                    ></div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Mosha</label>
+                    <input type="number"
+                           class="form-control"
+                           placeholder="Shkruaj moshen..."
+                           th:field="*{age}"
+                           th:classappend="${#fields.hasErrors('age') ? 'is-invalid' : ''}"
+                    />
+                    <div th:if="${#fields.hasErrors('age')}"
+                         th:errors="*{age}"
+                         class="invalid-feedback"
+                    ></div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Universiteti</label>
+                    <input type="text"
+                           class="form-control"
+                           placeholder="Shkruaj kodin e universitetit..."
+                           th:field="*{university}"
+                           th:classappend="${#fields.hasErrors('university') ? 'is-invalid' : ''}"
+                    />
+                    <div th:if="${#fields.hasErrors('university')}"
+                         th:errors="*{university}"
+                         class="invalid-feedback"
+                    ></div>
+                </div>
+
+                <div class="text-end">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

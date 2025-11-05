@@ -9,8 +9,10 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @Controller // ki mi menaxhu web requestat
 @RequestMapping("/") // rruga apo path (route) se qysh vijm deri te kontrolleri
@@ -132,5 +134,22 @@ public class HomeController {
     public String studentForm(Model model) {
         model.addAttribute("student", new Student());
         return "student-form";
+    }
+
+    final Set<Student> students = new HashSet<>();
+    @PostMapping("/process-student-data")
+    public String processStudentData(@Valid @ModelAttribute("student") Student student, BindingResult result) {
+        if (result.hasErrors()) {
+            return "student-form";
+        } else {
+            students.add(student);
+            return "redirect:/submitted-students";
+        }
+    }
+
+    @GetMapping("/submitted-students")
+    public String submittedStudents(Model model) {
+        model.addAttribute("studentsList", students);
+        return "submitted-students";
     }
 }
