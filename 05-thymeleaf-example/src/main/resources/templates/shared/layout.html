@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en" th:fragment="layoutFragment(title, content, styles, scripts)">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <!--    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">-->
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <!--    insertimi i styles nese ka -->
+    <th:block th:if="${styles != null}">
+        <th:block th:insert="${styles}"></th:block>
+    </th:block>
+    <title th:text="${title}"></title>
+</head>
+<body>
+<!--    <th:block th:insert="shared/nav"></th:block>-->
+<!-- me selektorin ~{} e renderon ni fragment apo faqe te html -->
+<!-- me selektorin ${} ni variabel, parameter apo field te klases-->
+<th:block th:insert="~{shared/nav}"></th:block>
+
+<!-- renderimi i main kontentit te faqes -->
+<div class="mt-5">
+    <th:block th:replace="${content}"></th:block>
+</div>
+
+<!--    insertimi i skriptave nese ka -->
+<th:block th:if="${scripts != null}">
+    <th:block th:insert="${scripts}"></th:block>
+</th:block>
+</body>
+</html>
