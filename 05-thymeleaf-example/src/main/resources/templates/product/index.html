@@ -1,0 +1,21 @@
+<html th:replace="~{shared/layout::layoutFragment('Products', ~{::main}, null, null)}">
+
+<main class="container">
+    <h1>Products</h1>
+
+    <div class="text-end">
+        <a th:href="@{/products/add}" class="btn btn-primary">Shto</a>
+    </div>
+
+    <div class="row">
+        <div class="col-md-3 mb-5" th:each="product : ${products}">
+            <th:block th:insert="
+                ~{shared/_product::productFragment(
+                ${product.title}, ${product.description}, ${product.image}, ${product.price} + '€'
+                )}">
+            </th:block>
+        </div>
+    </div>
+</main>
+
+</html>
