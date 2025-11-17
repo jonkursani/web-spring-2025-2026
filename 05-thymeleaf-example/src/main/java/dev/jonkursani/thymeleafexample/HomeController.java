@@ -18,11 +18,11 @@ import java.util.Set;
 @RequestMapping("/") // rruga apo path (route) se qysh vijm deri te kontrolleri
 public class HomeController {
     // per mi largu hapesirat e panevojshme nese useri na dergon ne input '      '
-    @InitBinder
-    public void initBinder(WebDataBinder binder) {
-        StringTrimmerEditor stringTrimmerEditor = new StringTrimmerEditor(true);
-        binder.registerCustomEditor(String.class, stringTrimmerEditor);
-    }
+//    @InitBinder
+//    public void initBinder(WebDataBinder binder) {
+//        StringTrimmerEditor stringTrimmerEditor = new StringTrimmerEditor(true);
+//        binder.registerCustomEditor(String.class, stringTrimmerEditor);
+//    }
 
     @GetMapping
 //    @GetMapping("/home")

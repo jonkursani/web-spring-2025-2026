@@ -11,7 +11,8 @@
         <div class="col-md-3 mb-5" th:each="product : ${products}">
             <th:block th:insert="
                 ~{shared/_product::productFragment(
-                ${product.title}, ${product.description}, ${product.image}, ${product.price} + '€'
+                ${product.title}, ${product.description}, ${product.image}, ${product.price} + '€',
+                '/products/update/' + ${product.id}
                 )}">
             </th:block>
         </div>

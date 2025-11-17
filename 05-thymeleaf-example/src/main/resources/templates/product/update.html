@@ -1,12 +1,13 @@
-<html th:replace="~{shared/layout::layoutFragment('Shto produkt', ~{::main}, null, null)}">
+<html th:replace="~{shared/layout::layoutFragment('Modifiko produktin', ~{::main}, null, null)}">
 
 <main class="container">
     <div class="card">
         <div class="card-header">
-            <h5>Shto produkt</h5>
+            <h5>Modifiko produktin</h5>
         </div>
         <div class="card-body">
-            <form th:action="@{/products/add}" th:object="${product}" method="post">
+<!--            /procuts/update/1 (id=1)-->
+            <form th:action="@{/products/update/{id}(id=${product.id})}" th:object="${product}" method="post">
                 <div class="mb-3">
                     <label for="title" class="form-label">Titulli</label>
                     <input type="text" class="form-control" id="title" th:field="*{title}">
