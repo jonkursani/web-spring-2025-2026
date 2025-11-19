@@ -3,19 +3,34 @@
 <main class="container">
     <h1>Products</h1>
 
-    <div class="text-end">
-        <a th:href="@{/products/add}" class="btn btn-primary">Shto</a>
+    <div class="my-4">
+        <form th:action="@{/products}">
+            <div class="input-group mb-3">
+                <a th:href="@{/products/add}" class="btn btn-primary">Shto produkt</a>
+                <input type="text"
+                       class="form-control"
+                       placeholder="Kerko produkt..."
+                       name="searchText"
+                       th:value="${searchText}">
+                <button class="btn btn-outline-secondary" type="submit">Kerko</button>
+            </div>
+        </form>
     </div>
 
-    <div class="row">
+    <div class="row" th:if="${!#lists.isEmpty(products)}">
+<!--    <div class="row" th:unless="${#lists.isEmpty(products)}">-->
         <div class="col-md-3 mb-5" th:each="product : ${products}">
             <th:block th:insert="
                 ~{shared/_product::productFragment(
                 ${product.title}, ${product.description}, ${product.image}, ${product.price} + '€',
-                '/products/update/' + ${product.id}
+                '/products/update/' + ${product.id},
+                '/products/delete/' + ${product.id}
                 )}">
             </th:block>
         </div>
+    </div>
+    <div class="text-center" th:if="${#lists.isEmpty(products)}">
+        <h5>Produkti nuk u gjet 😒</h5>
     </div>
 </main>
 

@@ -12,6 +12,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/products")
@@ -40,8 +41,18 @@ public class ProductController {
     }
 
     @GetMapping // route => /
-    public String listProducts(Model model) {
-        model.addAttribute("products", products);
+    public String listProducts(@RequestParam(required = false) String searchText, Model model) {
+//        Set<Product> filteredProducts
+        var filteredProducts = products;
+
+        if (searchText != null && !searchText.isBlank()) {
+            filteredProducts = products.stream()
+                    .filter(p -> p.getTitle().toLowerCase().contains(searchText.toLowerCase()))
+                    .collect(Collectors.toSet()); // prej stream e kthen ne liste Set<>
+        }
+
+        model.addAttribute("searchText", searchText);
+        model.addAttribute("products", filteredProducts);
         return "product/index";
     }
 
@@ -83,8 +94,51 @@ public class ProductController {
     }
 
     @PostMapping("/update/{id}")
-    public String update(@Valid @ModelAttribute Product product, BindingResult bindingResult) {
-        // logjika per update
+    public String update(@PathVariable int id, @Valid @ModelAttribute Product product, BindingResult bindingResult) {
+        // kontrollo nese ka errora
+        if (bindingResult.hasErrors()) {
+            return "product/update";
+        }
+
+        // filtro produktin me id
+        Product productFromList = products.stream()
+                .filter(p -> p.getId() == id)
+                .findFirst()
+                .orElse(null);
+
+        // kontrollo nese produkti eshte null
+        if (productFromList == null) {
+            return "redirect:/products";
+        }
+
+        // nese produkti nuk eshte null ateher e bejm update
+        productFromList.setTitle(product.getTitle());
+        productFromList.setDescription(product.getDescription());
+        productFromList.setPrice(product.getPrice());
+        productFromList.setImage(product.getImage());
+
+        return "redirect:/products";
+    }
+
+    @GetMapping("/delete/{id}")
+    public String delete(@PathVariable int id, Model model) {
+        Product productFromList = products.stream()
+                .filter(p -> p.getId() == id)
+                .findFirst()
+                .orElse(null);
+
+        if (productFromList == null) {
+            return "redirect:/products";
+        }
+
+        model.addAttribute("productToDelete", productFromList);
+
+        return "product/delete";
+    }
+
+    @PostMapping("/delete/{id}")
+    public String delete(@PathVariable int id) {
+        products.removeIf(p -> p.getId() == id);
         return "redirect:/products";
     }
 }

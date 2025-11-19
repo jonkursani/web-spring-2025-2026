@@ -1,0 +1,22 @@
+<html th:replace="~{shared/layout::layoutFragment('Fshij produktin', ~{::main}, null, null)}">
+
+<main class="container">
+    <div class="card text-center">
+        <div class="card-header">
+            <h5>Fshij Produktin</h5>
+        </div>
+        <div class="card-body">
+            <h5 class="card-title">A jeni i/e sigurte qe deshironi ta fshini kete produkt?</h5>
+            <p class="card-text">
+                Titulli: <span th:text="${productToDelete.id} + ' - ' + ${productToDelete.title}"></span>
+            </p>
+            <hr>
+            <form th:action="@{/products/delete/{id}(id=${productToDelete.id})}" method="post">
+                <button type="submit" class="btn btn-danger">Po</button>
+                <a th:href="@{/products}" class="btn btn-outline-secondary">Jo</a>
+            </form>
+        </div>
+    </div>
+</main>
+
+</html>
