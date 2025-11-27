@@ -2,15 +2,17 @@ package dev.jonkursani.lombokjpa.controllers;
 
 import dev.jonkursani.lombokjpa.entities.Product;
 import dev.jonkursani.lombokjpa.repositories.ProductRepository;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 
+import javax.swing.text.html.Option;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/products")
@@ -39,8 +41,91 @@ public class ProductController {
         return "product/index";
     }
 
+    @GetMapping("/add")
+    public String add(Model model) {
+        model.addAttribute("product", new Product());
+        return "product/add";
+    }
 
+    @PostMapping("/add")
+    public String add(@Valid @ModelAttribute Product product, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "product/add";
+        }
 
+        // nese nuk ekziston produkti e krijon
+        // insert into products(title, description, image, price) values (?, ?, ?, ?)
+        productRepository.save(product);
+        return "redirect:/products";
+    }
 
+    @GetMapping("/update/{id}")
+    public String update(@PathVariable int id, Model model) {
+//        var productFromDb = productRepository.findById(id);
+        Optional<Product> productFromDb = productRepository.findById(id);
 
+        if (productFromDb.isEmpty()) {
+            return "redirect:/products";
+        }
+
+        Product product = productFromDb.get();
+        model.addAttribute("product", product);
+        return "product/update";
+    }
+
+    @PostMapping("/update/{id}")
+    public String update(@PathVariable int id, @Valid @ModelAttribute Product product, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "product/update";
+        }
+
+        Optional<Product> productFromDb = productRepository.findById(id);
+
+        if (productFromDb.isEmpty()) {
+            return "redirect:/products";
+        }
+
+        Product productToUpdate = productFromDb.get();
+
+        // product => produkti prej formes
+        // productToUpdate => produkti prej DB
+        productToUpdate.setTitle(product.getTitle());
+        productToUpdate.setDescription(product.getDescription());
+        productToUpdate.setPrice(product.getPrice());
+        productToUpdate.setImage(product.getImage());
+
+        // nese e gjen produktin me id e bon update
+        // update products set title = ?, description = ?, image = ?, price = ? where id = ?
+        productRepository.save(productToUpdate);
+
+        return "redirect:/products";
+    }
+
+    @GetMapping("/delete/{id}")
+    public String delete(@PathVariable int id, Model model) {
+        Optional<Product> productFromDb = productRepository.findById(id);
+
+        if (productFromDb.isEmpty())
+            return "redirect:/products";
+
+        Product productToDelete = productFromDb.get();
+        model.addAttribute("productToDelete", productToDelete);
+        return "product/delete";
+    }
+
+    @PostMapping("/delete/{id}")
+    public String delete(@PathVariable int id) {
+        Optional<Product> productFromDb = productRepository.findById(id);
+
+        if (productFromDb.isEmpty())
+            return "redirect:/products";
+
+        Product productToDelete = productFromDb.get();
+
+//        productRepository.deleteById(id);
+        // delete from products where id = ?
+        productRepository.delete(productToDelete);
+
+        return "redirect:/products";
+    }
 }

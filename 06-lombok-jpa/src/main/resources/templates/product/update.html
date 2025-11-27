@@ -1,0 +1,58 @@
+<html th:replace="~{shared/layout::layoutFragment('Modifiko produktin', ~{::main}, null, null)}">
+
+<main class="container">
+    <div class="card">
+        <div class="card-header">
+            <h5>Modifiko produktin</h5>
+        </div>
+        <div class="card-body">
+            <!--            /procuts/update/1 (id=1)-->
+            <form th:action="@{/products/update/{id}(id=${product.id})}" th:object="${product}" method="post">
+                <div class="mb-3">
+                    <label for="title" class="form-label">Titulli</label>
+                    <input type="text" class="form-control" id="title" th:field="*{title}">
+                    <div th:if="${#fields.hasErrors('title')}"
+                         th:errors="*{title}"
+                         class="text-danger">
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="description" class="form-label">Pershkrimi</label>
+                    <textarea id="description" class="form-control" th:field="*{description}"></textarea>
+                    <div th:if="${#fields.hasErrors('description')}"
+                         th:errors="*{description}"
+                         class="text-danger">
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="price" class="form-label">Cmimi</label>
+                    <input type="number" class="form-control" id="price" th:field="*{price}" step="0.01">
+                    <div th:if="${#fields.hasErrors('price')}"
+                         th:errors="*{price}"
+                         class="text-danger">
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="image" class="form-label">Foto</label>
+                    <input type="text" class="form-control" id="image" th:field="*{image}">
+                    <div th:if="${#fields.hasErrors('image')}"
+                         th:errors="*{image}"
+                         class="text-danger">
+                    </div>
+                </div>
+
+                <hr>
+
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary">Ruaj</button>
+                    <a th:href="@{/products}" class="btn btn-outline-secondary ms-2">Anulo</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</main>
+
+</html>
