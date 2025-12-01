@@ -43,6 +43,17 @@
                     </div>
                 </div>
 
+                <div class="mb-3">
+                    <label for="category" class="form-label">Kategoria</label>
+                    <select id="category" class="form-select" th:field="*{category.id}">
+                        <option value="">Zgjedh kategorine</option>
+                        <option th:each="cat : ${categories}"
+                                th:value="${cat.id}"
+                                th:text="${cat.name}"
+                        ></option>
+                    </select>
+                </div>
+
                 <hr>
 
                 <div class="text-center">

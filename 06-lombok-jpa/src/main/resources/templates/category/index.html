@@ -1,0 +1,24 @@
+<html th:replace="~{shared/layout::layoutFragment('Kategorite', ~{::main}, null, null)}">
+
+<main class="container">
+    <h1>Kategorite</h1>
+
+    <div class="my-4">
+        <a th:href="@{/categories/add}" class="btn btn-primary">Shto kategori</a>
+    </div>
+
+    <div class="list-group" th:if="${!#lists.isEmpty(categories)}">
+        <a href="#"
+           class="list-group-item list-group-item-action"
+           th:each="cat : ${categories}"
+        >
+            <h5 class="mb-1" th:text="${cat.name}">Kategoria</h5>
+            <p class="mb-1" th:text="${cat.description}">Pershkrimi</p>
+        </a>
+    </div>
+    <div class="text-center" th:if="${#lists.isEmpty(categories)}">
+        <h4>Kategorite nuk u gjeten 😒</h4>
+    </div>
+</main>
+
+</html>

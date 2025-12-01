@@ -1,6 +1,7 @@
 package dev.jonkursani.lombokjpa.controllers;
 
 import dev.jonkursani.lombokjpa.entities.Product;
+import dev.jonkursani.lombokjpa.repositories.CategoryRepository;
 import dev.jonkursani.lombokjpa.repositories.ProductRepository;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +21,7 @@ import java.util.Optional;
 public class ProductController {
     // DI => Dependency Injection
     private final ProductRepository productRepository;
+    private final CategoryRepository categoryRepository;
 
     // @Autowired
 //    public ProductController(ProductRepository productRepository) {
@@ -44,6 +46,8 @@ public class ProductController {
     @GetMapping("/add")
     public String add(Model model) {
         model.addAttribute("product", new Product());
+        var categories = categoryRepository.findAll();
+        model.addAttribute("categories", categories);
         return "product/add";
     }
 
@@ -55,6 +59,16 @@ public class ProductController {
 
         // nese nuk ekziston produkti e krijon
         // insert into products(title, description, image, price) values (?, ?, ?, ?)
+
+        // validimi per mos me lon me vendos kategori qe nuk ekziston
+        if (product.getCategory() != null && product.getCategory().getId() != null) {
+            var categoryFromDb = categoryRepository.findById(product.getCategory().getId());
+            if (categoryFromDb.isPresent()) {
+                product.setCategory(categoryFromDb.get());
+            }
+
+        }
+
         productRepository.save(product);
         return "redirect:/products";
     }

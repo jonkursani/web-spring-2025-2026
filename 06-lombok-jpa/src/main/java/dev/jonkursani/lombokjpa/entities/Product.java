@@ -36,4 +36,9 @@ public class Product {
 
     @NotNull(message = "Image is required")
     private String image;
+
+    // category_id => FK
+    @ManyToOne
+    @JoinColumn(name = "category_id") // kolona e cila krijohet ne tabelen products
+    private Category category;
 }
