@@ -24,7 +24,8 @@
                 ~{shared/_product::productFragment(
                 ${product.title}, ${product.description}, ${product.image}, ${product.price} + '€',
                 '/products/update/' + ${product.id},
-                '/products/delete/' + ${product.id}
+                '/products/delete/' + ${product.id},
+                ${product.category != null ? product.category.name : null}
                 )}">
             </th:block>
         </div>

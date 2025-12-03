@@ -7,15 +7,28 @@
         <a th:href="@{/categories/add}" class="btn btn-primary">Shto kategori</a>
     </div>
 
-    <div class="list-group" th:if="${!#lists.isEmpty(categories)}">
-        <a href="#"
-           class="list-group-item list-group-item-action"
-           th:each="cat : ${categories}"
+    <ul class="list-group" th:if="${!#lists.isEmpty(categories)}">
+        <li class="list-group-item d-flex justify-content-between align-items-center"
+            th:each="cat : ${categories}"
         >
-            <h5 class="mb-1" th:text="${cat.name}">Kategoria</h5>
-            <p class="mb-1" th:text="${cat.description}">Pershkrimi</p>
-        </a>
-    </div>
+            <div class="ms-2 me-auto">
+                <div class="fw-bold" th:text="${cat.name}"></div>
+                <p th:text="${cat.description}"></p>
+            </div>
+
+            <div>
+                <a th:href="@{/categories/update/{id}(id=${cat.id})}"
+                   class="btn btn-outline-secondary">
+                    Modifiko
+                </a>
+                <a th:href="@{'/categories/delete/' + ${cat.id}}"
+                   class="btn btn-outline-danger">
+                    Fshij
+                </a>
+            </div>
+
+        </li>
+    </ul>
     <div class="text-center" th:if="${#lists.isEmpty(categories)}">
         <h4>Kategorite nuk u gjeten 😒</h4>
     </div>

@@ -1,5 +1,6 @@
 package dev.jonkursani.lombokjpa.controllers;
 
+import dev.jonkursani.lombokjpa.entities.Category;
 import dev.jonkursani.lombokjpa.entities.Product;
 import dev.jonkursani.lombokjpa.repositories.CategoryRepository;
 import dev.jonkursani.lombokjpa.repositories.ProductRepository;
@@ -52,8 +53,9 @@ public class ProductController {
     }
 
     @PostMapping("/add")
-    public String add(@Valid @ModelAttribute Product product, BindingResult bindingResult) {
+    public String add(@Valid @ModelAttribute Product product, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
+            model.addAttribute("categories", categoryRepository.findAll());
             return "product/add";
         }
 
@@ -66,7 +68,6 @@ public class ProductController {
             if (categoryFromDb.isPresent()) {
                 product.setCategory(categoryFromDb.get());
             }
-
         }
 
         productRepository.save(product);
@@ -77,6 +78,7 @@ public class ProductController {
     public String update(@PathVariable int id, Model model) {
 //        var productFromDb = productRepository.findById(id);
         Optional<Product> productFromDb = productRepository.findById(id);
+        List<Category> categories = categoryRepository.findAll();
 
         if (productFromDb.isEmpty()) {
             return "redirect:/products";
@@ -84,12 +86,14 @@ public class ProductController {
 
         Product product = productFromDb.get();
         model.addAttribute("product", product);
+        model.addAttribute("categories", categories);
         return "product/update";
     }
 
     @PostMapping("/update/{id}")
-    public String update(@PathVariable int id, @Valid @ModelAttribute Product product, BindingResult bindingResult) {
+    public String update(@PathVariable int id, @Valid @ModelAttribute Product product, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
+            model.addAttribute("categories", categoryRepository.findAll());
             return "product/update";
         }
 
@@ -107,6 +111,16 @@ public class ProductController {
         productToUpdate.setDescription(product.getDescription());
         productToUpdate.setPrice(product.getPrice());
         productToUpdate.setImage(product.getImage());
+
+        if (product.getCategory() != null && product.getCategory().getId() != null) {
+            var categoryFromDb = categoryRepository.findById(product.getCategory().getId());
+//            if (categoryFromDb.isPresent()) {
+//                productToUpdate.setCategory(categoryFromDb.get());
+//            }
+            categoryFromDb.ifPresent(productToUpdate::setCategory);
+        } else {
+            productToUpdate.setCategory(null);
+        }
 
         // nese e gjen produktin me id e bon update
         // update products set title = ?, description = ?, image = ?, price = ? where id = ?

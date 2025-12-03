@@ -7,12 +7,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/categories")
@@ -44,5 +42,33 @@ public class CategoryController {
         return "redirect:/categories";
     }
 
+    @GetMapping("/update/{id}")
+    public String update(@PathVariable int id, Model model) {
+        Optional<Category> categoryFromDb = categoryRepository.findById(id);
 
+        if (categoryFromDb.isEmpty())
+            return "redirect:/categories";
+
+        model.addAttribute("category", categoryFromDb.get());
+        return "category/update";
+    }
+
+    @PostMapping("/update/{id}")
+    public String update(@PathVariable int id, @Valid @ModelAttribute Category category, BindingResult br) {
+        if (br.hasErrors())
+            return "category/update";
+
+        Optional<Category> categoryFromDb = categoryRepository.findById(id);
+
+        if (categoryFromDb.isEmpty())
+            return "redirect:/categories";
+
+        Category categoryToUpdate = categoryFromDb.get();
+        categoryToUpdate.setName(category.getName());
+        categoryToUpdate.setDescription(category.getDescription());
+
+        categoryRepository.save(categoryToUpdate);
+
+        return "redirect:/categories";
+    }
 }
