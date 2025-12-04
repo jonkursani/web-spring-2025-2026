@@ -1,0 +1,33 @@
+<html th:replace="~{shared/layout::layoutFragment('Fshij kategorine', ~{::main}, null, null)}">
+
+<main class="container">
+    <div class="alert alert-danger mb-3" th:if="${errorMessage != null && errorMessage != ''}">
+        <span th:text="${errorMessage}"></span>
+    </div>
+
+    <div class="card text-center">
+        <div class="card-header">
+            <h5>Fshij kategorine</h5>
+        </div>
+        <div class="card-body">
+            <h5>
+                A jeni i/e sigurte qe deshironi ta fshini kategorine: <span th:text="${categoryToDelete.name}"></span>
+            </h5>
+
+            <p th:if="${productsCount > 0}">
+                Ju nuk mund ta fshini kete kategori sepse ka <span th:text="${productsCount}"></span>
+                <span th:text="${productsCount == 1} ? 'produkt' : 'produkte'"></span>.
+                Ndryshoni kategorine apo fshini produktet ne menyre qe ta fshini kete kategori.
+            </p>
+
+            <hr>
+
+            <form th:action="@{/categories/delete/{id}(id=${categoryToDelete.id})}" method="post">
+                <button type="submit" class="btn btn-danger" th:disabled="${productsCount > 0}">Po</button>
+                <a th:href="@{/categories}" class="btn btn-outline-secondary">Jo</a>
+            </form>
+        </div>
+    </div>
+</main>
+
+</html>

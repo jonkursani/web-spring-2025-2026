@@ -17,6 +17,10 @@
             </div>
 
             <div>
+                <a th:href="@{/categories/{id}/products(id=${cat.id})}"
+                   class="btn btn-outline-info">
+                    Produktet
+                </a>
                 <a th:href="@{/categories/update/{id}(id=${cat.id})}"
                    class="btn btn-outline-secondary">
                     Modifiko

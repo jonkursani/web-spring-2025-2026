@@ -26,6 +26,7 @@ public class Category {
     @Column(name = "description", length = 255)
     private String description;
 
-    @OneToMany(mappedBy = "category") // "category" eshte property brenda klases Product
+    // default eshte LAZY
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "category") // "category" eshte property brenda klases Product
     private List<Product> products = new ArrayList<>();
 }

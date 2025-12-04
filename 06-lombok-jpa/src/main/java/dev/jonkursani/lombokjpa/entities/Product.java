@@ -38,7 +38,7 @@ public class Product {
     private String image;
 
     // category_id => FK
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY) // default eshte EAGER
     @JoinColumn(name = "category_id") // kolona e cila krijohet ne tabelen products
     private Category category;
 }

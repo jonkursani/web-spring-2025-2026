@@ -1,0 +1,41 @@
+<html th:replace="~{shared/layout::layoutFragment('Detajet e kategorise', ~{::main}, null, null)}">
+
+<main class="container">
+    <h1 th:text="${category.name}"></h1>
+    <p th:text="${category.description}"></p>
+
+    <div class="my-3">
+        <a th:href="@{/categories}" class="btn btn-outline-secondary btn-sm">
+            Kthehu te lista
+        </a>
+    </div>
+
+    <ul class="list-group" th:if="${!#lists.isEmpty(products)}">
+        <li class="list-group-item d-flex justify-content-between align-items-center"
+            th:each="p : ${products}"
+        >
+            <div class="ms-2 me-auto">
+                <div class="fw-bold" th:text="${p.title}"></div>
+                <p th:text="${p.description}"></p>
+                <small class="text-muted" th:text="${p.price} + '€'"></small>
+            </div>
+
+            <div>
+                <a th:href="@{/products/update/{id}(id=${p.id})}"
+                   class="btn btn-outline-secondary">
+                    Modifiko
+                </a>
+                <a th:href="@{'/products/delete/' + ${p.id}}"
+                   class="btn btn-outline-danger">
+                    Fshij
+                </a>
+            </div>
+
+        </li>
+    </ul>
+    <div class="text-center" th:if="${#lists.isEmpty(products)}">
+        <h4>Kjo kategori nuk ka produkte 😒</h4>
+    </div>
+</main>
+
+</html>
