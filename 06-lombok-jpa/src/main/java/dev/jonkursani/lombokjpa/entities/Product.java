@@ -8,6 +8,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table(name = "products")
 @Data
@@ -41,4 +44,13 @@ public class Product {
     @ManyToOne(fetch = FetchType.LAZY) // default eshte EAGER
     @JoinColumn(name = "category_id") // kolona e cila krijohet ne tabelen products
     private Category category;
+
+    // "New", "Featured", "Bestseller", "Sale", "BlackFriday"
+    @ManyToMany(fetch = FetchType.LAZY) // default eshte LAZY
+    @JoinTable(
+            name = "product_tags",
+            joinColumns = @JoinColumn(name = "product_id"),
+            inverseJoinColumns = @JoinColumn(name = "tag_id")
+    )
+    private List<Tag> tags = new ArrayList<>();
 }

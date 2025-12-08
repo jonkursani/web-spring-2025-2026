@@ -4,6 +4,7 @@ import dev.jonkursani.lombokjpa.entities.Category;
 import dev.jonkursani.lombokjpa.entities.Product;
 import dev.jonkursani.lombokjpa.repositories.CategoryRepository;
 import dev.jonkursani.lombokjpa.repositories.ProductRepository;
+import dev.jonkursani.lombokjpa.repositories.TagRepository;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,7 @@ public class ProductController {
     // DI => Dependency Injection
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
+    private final TagRepository tagRepository;
 
     // @Autowired
 //    public ProductController(ProductRepository productRepository) {
@@ -49,6 +51,7 @@ public class ProductController {
         model.addAttribute("product", new Product());
         var categories = categoryRepository.findAll();
         model.addAttribute("categories", categories);
+        model.addAttribute("tags", tagRepository.findAll());
         return "product/add";
     }
 

@@ -25,7 +25,8 @@
                 ${product.title}, ${product.description}, ${product.image}, ${product.price} + '€',
                 '/products/update/' + ${product.id},
                 '/products/delete/' + ${product.id},
-                ${product.category != null ? product.category.name : null}
+                ${product.category != null ? product.category.name : null},
+                ${product.tags != null ? product.tags : null}
                 )}">
             </th:block>
         </div>

@@ -54,6 +54,25 @@
                     </select>
                 </div>
 
+                <div class="mb-3">
+                    <label class="form-label">Tagjet</label>
+                    <br>
+<!--                    <select id="tag" class="form-select" th:field="*{tags}" multiple>-->
+<!--                        <option value="">Zgjedh tagjet</option>-->
+<!--                        <option th:each="tag : ${tags}"-->
+<!--                                th:value="${tag.id}"-->
+<!--                                th:text="${tag.name}"></option>-->
+<!--                    </select>-->
+
+                    <!-- checkbox -->
+                    <span th:each="tag : ${tags}" class="me-3">
+                        <input type="checkbox" th:field="*{tags}" th:value="${tag.id}">
+                        <label th:text="${tag.name}"></label>
+                    </span>
+                </div>
+
+
+
                 <hr>
 
                 <div class="text-center">
