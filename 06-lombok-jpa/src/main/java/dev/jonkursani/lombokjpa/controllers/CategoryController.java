@@ -1,9 +1,13 @@
 package dev.jonkursani.lombokjpa.controllers;
 
+import dev.jonkursani.lombokjpa.dtos.category.CategoryDto;
+import dev.jonkursani.lombokjpa.dtos.category.CreateCategoryRequest;
+import dev.jonkursani.lombokjpa.dtos.category.UpdateCategoryRequest;
 import dev.jonkursani.lombokjpa.entities.Category;
 import dev.jonkursani.lombokjpa.entities.Product;
 import dev.jonkursani.lombokjpa.repositories.CategoryRepository;
 import dev.jonkursani.lombokjpa.repositories.ProductRepository;
+import dev.jonkursani.lombokjpa.services.CategoryService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -21,57 +25,71 @@ import java.util.Optional;
 public class CategoryController {
     private final CategoryRepository categoryRepository;
     private final ProductRepository productRepository;
+    private final CategoryService categoryService;
 
     @GetMapping
     public String index(Model model) {
-        List<Category> categories = categoryRepository.findAll();
+        // List<Category> categories = categoryRepository.findAll();
+        List<CategoryDto> categories = categoryService.findAll();
         model.addAttribute("categories", categories);
         return "category/index";
     }
 
     @GetMapping("/add")
     public String add(Model model) {
-        model.addAttribute("category", new Category());
+        model.addAttribute("category", new CategoryDto());
         return "category/add";
     }
 
     @PostMapping("/add")
-    public String add(@Valid @ModelAttribute Category category, BindingResult br) {
+    public String add(@Valid @ModelAttribute CreateCategoryRequest category, BindingResult br) {
         if (br.hasErrors()) {
             return "category/add";
         }
 
-        categoryRepository.save(category);
+        categoryService.create(category);
+        // categoryRepository.save(category);
 
         return "redirect:/categories";
     }
 
     @GetMapping("/update/{id}")
     public String update(@PathVariable int id, Model model) {
-        Optional<Category> categoryFromDb = categoryRepository.findById(id);
+        // Optional<Category> categoryFromDb = categoryRepository.findById(id);
+        CategoryDto categoryFromDb = categoryService.findById(id);
 
-        if (categoryFromDb.isEmpty())
+//        if (categoryFromDb.isEmpty())
+        if (categoryFromDb == null)
             return "redirect:/categories";
 
-        model.addAttribute("category", categoryFromDb.get());
+//        model.addAttribute("category", categoryFromDb.get());
+        model.addAttribute("category", categoryFromDb);
         return "category/update";
     }
 
     @PostMapping("/update/{id}")
-    public String update(@PathVariable int id, @Valid @ModelAttribute Category category, BindingResult br) {
+    public String update(@PathVariable int id, @Valid @ModelAttribute UpdateCategoryRequest category, BindingResult br) {
         if (br.hasErrors())
             return "category/update";
 
-        Optional<Category> categoryFromDb = categoryRepository.findById(id);
+        // Optional<Category> categoryFromDb = categoryRepository.findById(id);
+        CategoryDto categoryFromDb = categoryService.findById(id);
 
-        if (categoryFromDb.isEmpty())
+//        if (categoryFromDb.isEmpty())
+        if (categoryFromDb == null)
             return "redirect:/categories";
 
-        Category categoryToUpdate = categoryFromDb.get();
-        categoryToUpdate.setName(category.getName());
-        categoryToUpdate.setDescription(category.getDescription());
+//        Category categoryToUpdate = categoryFromDb.get();
+//        categoryToUpdate.setName(category.getName());
+//        categoryToUpdate.setDescription(category.getDescription());
 
-        categoryRepository.save(categoryToUpdate);
+//        categoryRepository.save(categoryToUpdate);
+
+        CategoryDto updatedCategory = categoryService.update(id, category);
+
+        // me shfaq error pse su bo update kategoria
+        if (updatedCategory == null)
+            return "category/update";
 
         return "redirect:/categories";
     }
