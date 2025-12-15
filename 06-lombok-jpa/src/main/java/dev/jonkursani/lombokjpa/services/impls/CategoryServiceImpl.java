@@ -50,4 +50,9 @@ public class CategoryServiceImpl implements CategoryService {
                 .map(category -> categoryMapper.toDto(category))
                 .orElse(null);
     }
+
+    @Override
+    public void delete(Integer id) {
+        categoryRepository.deleteById(id);
+    }
 }

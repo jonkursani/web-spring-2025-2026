@@ -45,7 +45,7 @@
 
                 <div class="mb-3">
                     <label for="category" class="form-label">Kategoria</label>
-                    <select id="category" class="form-select" th:field="*{category.id}">
+                    <select id="category" class="form-select" th:field="*{categoryId}">
                         <option value="">Zgjedh kategorine</option>
                         <option th:each="cat : ${categories}"
                                 th:value="${cat.id}"
@@ -57,20 +57,23 @@
                 <div class="mb-3">
                     <label class="form-label">Tagjet</label>
                     <br>
-<!--                    <select id="tag" class="form-select" th:field="*{tags}" multiple>-->
-<!--                        <option value="">Zgjedh tagjet</option>-->
-<!--                        <option th:each="tag : ${tags}"-->
-<!--                                th:value="${tag.id}"-->
-<!--                                th:text="${tag.name}"></option>-->
-<!--                    </select>-->
+                    <!--                    <select id="tag" class="form-select" th:field="*{tags}" multiple>-->
+                    <!--                        <option value="">Zgjedh tagjet</option>-->
+                    <!--                        <option th:each="tag : ${tags}"-->
+                    <!--                                th:value="${tag.id}"-->
+                    <!--                                th:text="${tag.name}"></option>-->
+                    <!--                    </select>-->
 
                     <!-- checkbox -->
                     <span th:each="tag : ${tags}" class="me-3">
-                        <input type="checkbox" th:field="*{tags}" th:value="${tag.id}">
-                        <label th:text="${tag.name}"></label>
+                        <input type="checkbox"
+                               th:field="*{tagIds}"
+                               th:value="${tag.id}"
+                               th:id="${'tag-' + tag.id}"
+                        >
+                        <label th:text="${tag.name}" th:for="${'tag-' + tag.id}"></label>
                     </span>
                 </div>
-
 
 
                 <hr>

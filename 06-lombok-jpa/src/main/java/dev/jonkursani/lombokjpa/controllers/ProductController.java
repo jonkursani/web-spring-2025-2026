@@ -1,10 +1,15 @@
 package dev.jonkursani.lombokjpa.controllers;
 
+import dev.jonkursani.lombokjpa.dtos.category.CategoryDto;
+import dev.jonkursani.lombokjpa.dtos.product.CreateProductRequest;
+import dev.jonkursani.lombokjpa.dtos.product.ProductDto;
 import dev.jonkursani.lombokjpa.entities.Category;
 import dev.jonkursani.lombokjpa.entities.Product;
 import dev.jonkursani.lombokjpa.repositories.CategoryRepository;
 import dev.jonkursani.lombokjpa.repositories.ProductRepository;
 import dev.jonkursani.lombokjpa.repositories.TagRepository;
+import dev.jonkursani.lombokjpa.services.CategoryService;
+import dev.jonkursani.lombokjpa.services.ProductService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +30,8 @@ public class ProductController {
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
     private final TagRepository tagRepository;
+    private final ProductService productService;
+    private final CategoryService categoryService;
 
     // @Autowired
 //    public ProductController(ProductRepository productRepository) {
@@ -33,12 +40,13 @@ public class ProductController {
 
     @GetMapping
     public String index(@RequestParam(required = false) String searchText, Model model) {
-        List<Product> products;
+//        List<Product> products;
+        List<ProductDto> products;
 
         if (searchText != null && !searchText.isBlank()) {
-            products = productRepository.findAllByTitleContainingIgnoreCase(searchText);
+            products = productService.findAllByTitle(searchText);
         } else {
-            products = productRepository.findAll();
+            products = productService.findAll();
         }
 
         model.addAttribute("searchText", searchText);
@@ -48,17 +56,19 @@ public class ProductController {
 
     @GetMapping("/add")
     public String add(Model model) {
-        model.addAttribute("product", new Product());
-        var categories = categoryRepository.findAll();
+        model.addAttribute("product", new ProductDto());
+//        var categories = categoryRepository.findAll();
+        List<CategoryDto> categories = categoryService.findAll();
         model.addAttribute("categories", categories);
-        model.addAttribute("tags", tagRepository.findAll());
+        model.addAttribute("tags", tagRepository.findAll()); // TODO: TagDto TagService
         return "product/add";
     }
 
     @PostMapping("/add")
-    public String add(@Valid @ModelAttribute Product product, BindingResult bindingResult, Model model) {
+    public String add(@Valid @ModelAttribute("product") CreateProductRequest product, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
-            model.addAttribute("categories", categoryRepository.findAll());
+            model.addAttribute("categories", categoryService.findAll());
+            model.addAttribute("tags", tagRepository.findAll()); // TODO: TagDto TagService
             return "product/add";
         }
 
@@ -66,14 +76,15 @@ public class ProductController {
         // insert into products(title, description, image, price) values (?, ?, ?, ?)
 
         // validimi per mos me lon me vendos kategori qe nuk ekziston
-        if (product.getCategory() != null && product.getCategory().getId() != null) {
-            var categoryFromDb = categoryRepository.findById(product.getCategory().getId());
-            if (categoryFromDb.isPresent()) {
-                product.setCategory(categoryFromDb.get());
-            }
-        }
+//        if (product.getCategory() != null && product.getCategory().getId() != null) {
+//            var categoryFromDb = categoryRepository.findById(product.getCategory().getId());
+//            if (categoryFromDb.isPresent()) {
+//                product.setCategory(categoryFromDb.get());
+//            }
+//        }
 
-        productRepository.save(product);
+        // productRepository.save(product);
+        productService.create(product);
         return "redirect:/products";
     }
 

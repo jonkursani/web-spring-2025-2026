@@ -23,7 +23,7 @@ import java.util.Optional;
 @RequestMapping("/categories")
 @RequiredArgsConstructor // krijimi i konstruktorit per inicializim
 public class CategoryController {
-    private final CategoryRepository categoryRepository;
+    // private final CategoryRepository categoryRepository;
     private final ProductRepository productRepository;
     private final CategoryService categoryService;
 
@@ -96,16 +96,18 @@ public class CategoryController {
 
     @GetMapping("/delete/{id}")
     public String delete(@PathVariable int id, Model model) {
-        Optional<Category> categoryFromDb = categoryRepository.findById(id);
+        // Optional<Category> categoryFromDb = categoryRepository.findById(id);
+        CategoryDto category = categoryService.findById(id);
 
-        if (categoryFromDb.isEmpty())
+//        if (categoryFromDb.isEmpty())
+        if (category == null)
             return "redirect:/categories";
 
-        Category categoryToDelete = categoryFromDb.get();
+        //Category categoryToDelete = categoryFromDb.get();
         // select count(*) from products where category_id = id
-        int productsCount = productRepository.countProductByCategory_Id(categoryToDelete.getId());
+        int productsCount = productRepository.countProductByCategory_Id(category.getId());
 
-        model.addAttribute("categoryToDelete", categoryToDelete);
+        model.addAttribute("categoryToDelete", category);
         model.addAttribute("productsCount", productsCount);
 
         return "category/delete";
@@ -114,17 +116,19 @@ public class CategoryController {
     @PostMapping("/delete/{id}")
     @Transactional
     public String deleteCategory(@PathVariable int id, Model model) {
-        Optional<Category> categoryFromDb = categoryRepository.findById(id);
+        // Optional<Category> categoryFromDb = categoryRepository.findById(id);
+        CategoryDto category = categoryService.findById(id);
 
-        if (categoryFromDb.isEmpty())
+//        if (categoryFromDb.isEmpty())
+        if (category == null)
             return "redirect:/categories";
 
-        Category categoryToDelete = categoryFromDb.get();
-        int productsCount = productRepository.countProductByCategory_Id(categoryToDelete.getId());
+        // Category categoryToDelete = categoryFromDb.get();
+        int productsCount = productRepository.countProductByCategory_Id(category.getId());
 
         // validimi ne server side nese dikush e bon enable butonin per delete ne html
         if (productsCount > 0) {
-            model.addAttribute("categoryToDelete", categoryToDelete);
+            model.addAttribute("categoryToDelete", category);
             model.addAttribute("productsCount", productsCount);
             model.addAttribute("errorMessage", "Ju nuk mund te fshini kete kategori sepse ka produkte");
 
@@ -143,19 +147,24 @@ public class CategoryController {
         }
 
         // delete category where id = categoryToDelete.getId()
-        categoryRepository.deleteById(categoryToDelete.getId());
+//        categoryRepository.deleteById(categoryToDelete.getId());
+        categoryService.delete(category.getId());
 
         return "redirect:/categories";
     }
 
     @GetMapping("/{id}/products")
     public String products(@PathVariable int id, Model model) {
-        Optional<Category> categoryFromDb = categoryRepository.findById(id);
+        // Optional<Category> categoryFromDb = categoryRepository.findById(id);
 
-        if (categoryFromDb.isEmpty())
+        CategoryDto category = categoryService.findById(id);
+
+//        if (categoryFromDb.isEmpty())
+        if (category == null)
             return "redirect:/categories";
 
-        Category category = categoryFromDb.get();
+//        Category category = categoryFromDb.get();
+        // TODO: duhet me ndrru per me lexu prej product service
         List<Product> products = productRepository.findAllByCategory_Id(category.getId());
 
         model.addAttribute("category", category);
@@ -163,6 +172,4 @@ public class CategoryController {
 
         return "category/products";
     }
-
-
 }

@@ -22,22 +22,22 @@ public class Product {
 //    @Column(name = "id")
     private Integer id;
 
-    @NotNull(message = "Title is required")
-    @Size(min = 2, max = 100, message = "Title must be between 2 and 100 characters")
+//    @NotNull(message = "Title is required")
+//    @Size(min = 2, max = 100, message = "Title must be between 2 and 100 characters")
     @Column(length = 100, nullable = false) // db
     private String title;
 
-    @NotNull(message = "Description is required")
-    @Size(min = 10, max = 255, message = "Description must be between 10 and 255 characters")
+//    @NotNull(message = "Description is required")
+//    @Size(min = 10, max = 255, message = "Description must be between 10 and 255 characters")
     @Column(length = 255, nullable = false)
     private String description;
 
-    @NotNull(message = "Price is required")
-    @Min(value = 0, message = "Price must be greater than or equal to 0")
+//    @NotNull(message = "Price is required")
+//    @Min(value = 0, message = "Price must be greater than or equal to 0")
     @Column(nullable = false)
     private Double price;
 
-    @NotNull(message = "Image is required")
+//    @NotNull(message = "Image is required")
     private String image;
 
     // category_id => FK
