@@ -2,6 +2,7 @@ package dev.jonkursani.lombokjpa.services.impls;
 
 import dev.jonkursani.lombokjpa.dtos.product.CreateProductRequest;
 import dev.jonkursani.lombokjpa.dtos.product.ProductDto;
+import dev.jonkursani.lombokjpa.dtos.product.UpdateProductRequest;
 import dev.jonkursani.lombokjpa.entities.Category;
 import dev.jonkursani.lombokjpa.entities.Product;
 import dev.jonkursani.lombokjpa.entities.Tag;
@@ -73,5 +74,42 @@ public class ProductServiceImpl implements ProductService {
         Product savedProduct = productRepository.save(product);
         ProductDto productDto = productMapper.toDto(savedProduct);
         return productDto;
+    }
+
+    @Override
+    public ProductDto update(Integer id, UpdateProductRequest updateProductRequest) {
+        return productRepository.findById(id)
+                .map(product -> {
+                    productMapper.updateEntityFromDto(updateProductRequest, product);
+
+                    Category category = getCategory(updateProductRequest.getCategoryId());
+                    if (category != null)
+                        product.setCategory(category);
+                    else
+                        product.setCategory(null);
+
+                    List<Tag> tags = getTags(updateProductRequest.getTagIds());
+                    if (!tags.isEmpty())
+                        product.setTags(tags);
+                    else
+                        product.setTags(null);
+
+                    return productRepository.save(product);
+                })
+                .map(productMapper::toDto)
+                .orElse(null);
+    }
+
+    @Override
+    public void delete(Integer id) {
+        productRepository.deleteById(id);
+    }
+
+    private Category getCategory(Integer id) {
+        return categoryRepository.findById(id).orElse(null);
+    }
+
+    private List<Tag> getTags(List<Integer> tagIds) {
+        return tagRepository.findAllById(tagIds);
     }
 }

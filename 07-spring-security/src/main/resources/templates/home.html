@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Home</title>
+</head>
+<body>
+<h1>Home</h1>
+<p>This is a home page</p>
+
+<hr>
+
+<p>Username: <span th:text="${#authentication.name}"></span></p>
+<p>Username: <span sec:authentication="principal.username"></span></p>
+<!-- Authorities = Rolet e userit -->
+<p>Roles: <span th:text="${#authentication.authorities}"></span></p>
+<p>Roles: <span sec:authentication="principal.authorities"></span></p>
+
+<!-- TODO: Role based access -->
+
+<form th:action="@{/logout}" method="post">
+    <button type="submit">Logout</button>
+</form>
+</body>
+</html>

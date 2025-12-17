@@ -46,14 +46,28 @@
 
                 <div class="mb-3">
                     <label for="category" class="form-label">Kategoria</label>
-                    <select id="category" class="form-select" th:field="*{category.id}">
+                    <select id="category" class="form-select" th:field="*{categoryId}">
                         <option value="">Zgjedh kategori</option>
                         <option th:each="cat : ${categories}"
                                 th:value="${cat.id}"
                                 th:text="${cat.name}"
-                                th:selected="${cat.id == product.category.id}"
+                                th:selected="${cat.id == product.categoryId}"
                         ></option>
                     </select>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Tagjet</label>
+                    <br>
+                    <!-- checkbox -->
+                    <span th:each="tag : ${tags}" class="me-3">
+                        <input type="checkbox"
+                               th:field="*{tagIds}"
+                               th:value="${tag.id}"
+                               th:id="${'tag-' + tag.id}"
+                        >
+                        <label th:text="${tag.name}" th:for="${'tag-' + tag.id}"></label>
+                    </span>
                 </div>
 
                 <hr>
