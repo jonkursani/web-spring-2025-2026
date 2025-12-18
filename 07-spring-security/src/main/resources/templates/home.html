@@ -19,7 +19,17 @@
 <p>Roles: <span th:text="${#authentication.authorities}"></span></p>
 <p>Roles: <span sec:authentication="principal.authorities"></span></p>
 
-<!-- TODO: Role based access -->
+<hr>
+
+<!--<p sec:authorize="hasRole('MANAGER')">-->
+<p th:if="${#authorization.expression('hasRole(''MANAGER'')')}">
+    <a th:href="@{/leaders}">Leaders</a> (Only managers can access)
+</p>
+
+<p sec:authorize="hasRole('ADMIN')">
+<!--<p th:if="${#authorization.expression('hasRole(''ADMIN'')')}">-->
+    <a th:href="@{/systems}">Systems</a> (Only admins can access)
+</p>
 
 <form th:action="@{/logout}" method="post">
     <button type="submit">Logout</button>

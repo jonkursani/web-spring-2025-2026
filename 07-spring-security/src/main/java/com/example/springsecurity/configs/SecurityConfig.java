@@ -37,13 +37,25 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.authorizeHttpRequests(
-            configurer -> configurer.anyRequest().authenticated()
+            configurer -> configurer
+                    .requestMatchers("/").hasRole("EMPLOYEE")
+                    .requestMatchers("/leaders/**").hasRole("MANAGER")//.hasAnyRole("MANAGER", "ADMIN")
+                    .requestMatchers("/systems/**").hasRole("ADMIN")
+//                    .requestMatchers("/products/add").hasRole("MANAGER")
+//                    .requestMatchers("/products/update").hasRole("MANAGER")
+//                    .requestMatchers("/products/delete").hasRole("ADMIN")
+//                    .requestMatchers("/products/**").hasRole("MANAGER")
+                    .anyRequest().authenticated()
         ).formLogin(
                 form ->
-                        form.loginPage("/login")
-                        .loginProcessingUrl("/login")
+                        form.loginPage("/login") // duhet me ekzistu ni @GetMapping("/login")
+                        .loginProcessingUrl("/login") // kju duhet me qene e njejte me th:action ne forme
                         .permitAll()
-        ).logout(logout -> logout.permitAll());
+        ).logout(
+                logout -> logout.permitAll()
+        ).exceptionHandling(
+                config -> config.accessDeniedPage("/access-denied")
+        );
 
 
         return httpSecurity.build();
