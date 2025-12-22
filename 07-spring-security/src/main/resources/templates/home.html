@@ -19,10 +19,14 @@
 <p>Roles: <span th:text="${#authentication.authorities}"></span></p>
 <p>Roles: <span sec:authentication="principal.authorities"></span></p>
 
+<p sec:authorize="hasRole('ADMIN') or hasRole('MANAGER')">
+    <a th:href="@{/users/add}">Add user</a>
+</p>
+
 <hr>
 
 <!--<p sec:authorize="hasRole('MANAGER')">-->
-<p th:if="${#authorization.expression('hasRole(''MANAGER'')')}">
+<p th:if="${#authorization.expression('hasRole(''MANAGER'') or hasRole(''ADMIN'')')}">
     <a th:href="@{/leaders}">Leaders</a> (Only managers can access)
 </p>
 
