@@ -1,0 +1,29 @@
+<html th:replace="~{shared/layout::layoutFragment('Users', ~{::div}, null, ~{::script})}">
+
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">Users</h5>
+
+        <div>
+            <button class="btn btn-primary" id="btnUsers">Load users</button>
+        </div>
+
+        <!-- Default Table -->
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Username</th>
+                <th scope="col">Role</th>
+                <th scope="col">Actions</th>
+            </tr>
+            </thead>
+            <tbody id="tblUsers"></tbody>
+        </table>
+        <!-- End Default Table Example -->
+    </div>
+</div>
+
+<script th:src="@{/js/user.js}"></script>
+
+</html>

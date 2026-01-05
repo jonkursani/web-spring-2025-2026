@@ -46,6 +46,8 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.authorizeHttpRequests(
                 configurer -> configurer
+                        .requestMatchers("/css/**", "/js/**", "/img/**", "/assets/**").permitAll()
+                        .requestMatchers("/login", "/register").anonymous()
                         .requestMatchers("/").hasAnyRole("EMPLOYEE", Role.MANAGER.name(), Role.ADMIN.name())//.hasRole("EMPLOYEE")
                         .requestMatchers("/leaders/**").hasAnyRole(Role.MANAGER.name(), Role.ADMIN.name()) //.hasRole("MANAGER")//.hasAnyRole("MANAGER", "ADMIN")
                         .requestMatchers("/systems/**").hasRole(Role.ADMIN.name())
@@ -58,7 +60,7 @@ public class SecurityConfig {
                 form ->
                         form.loginPage("/login") // duhet me ekzistu ni @GetMapping("/login")
                                 .loginProcessingUrl("/login") // kju duhet me qene e njejte me th:action ne forme
-                                .permitAll()
+                                .defaultSuccessUrl("/", true)
         ).logout(
                 logout -> logout.permitAll()
         ).exceptionHandling(
